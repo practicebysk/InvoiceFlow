@@ -1,13 +1,16 @@
 import jwt from "jsonwebtoken";
-import { User } from "../models.js";
+import { User } from "../models/User.js";
 
 export const authMiddleware = async (req, res, next) => {
     try {
-        const authHeader = req.headers.authorization;
-        if (!authHeader) {
-            return res.status(401).json({ message: "No token provided" });
+        let token;
+        if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+            token = req.headers.authorization.split(" ")[1];
         }
-        const token = authHeader;
+        if (!token) {
+            return res.status(401).json({ message: "Not authorized, no token" });
+        }
+
         const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
         const user = await User.findById(decoded.id).select("_id");
         if (!user) {
@@ -18,4 +21,4 @@ export const authMiddleware = async (req, res, next) => {
     } catch (error) {
         return res.status(401).json({ message: "Invalid or expired token" });
     }
-}
+};

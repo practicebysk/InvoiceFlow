@@ -1,7 +1,6 @@
 import { Invoice } from "../models/Invoice.js";
 
 export function getInvoice(page, size, filter = {}, sort) {
-    console.log(sort)
     const skip = (page - 1) * size;
     const sortField = Object.keys(sort || {})[0];
     if (sortField === 'invoiceNo') {
@@ -60,7 +59,6 @@ export function sendResponse(res, {
         };
 
     }
-    console.log(response)
     res.status(status).json(response);
 }
 
