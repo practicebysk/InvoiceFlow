@@ -1,0 +1,165 @@
+<div class="mat-modal">
+  <div class="mat-modal-header">
+    <h2 class="modal-title">Create New Invoice</h2>
+    <button type="button" class="close-btn border-0" mat-dialog-close>✕</button>
+  </div>
+
+  <div class="mat-modal-content">
+    <form [formGroup]="invoiceForm" class="invoice-modal">
+      <div class="card">
+        <h4>Customer Details</h4>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Customer Name</label>
+            <input type="text" placeholder="Enter customer name" formControlName="customerName" />
+            <app-form-error [control]="invoiceForm.get('customerName')">
+            </app-form-error>
+          </div>
+
+          <div class="form-group">
+            <label>Due Date</label>
+            <input type="date" formControlName="due_date" />
+            <app-form-error [control]="invoiceForm.get('due_date')">
+            </app-form-error>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h4>Billing Settings</h4>
+
+        <div class="grid-4">
+          <div class="form-group">
+            <label>Discount (%)</label>
+            <input type="number" formControlName="commonDiscount" />
+          </div>
+
+          <div class="form-group">
+            <label>Advance (₹)</label>
+            <input type="number" formControlName="advancePaid" />
+          </div>
+
+          <div class="form-group">
+            <label>GST Type</label>
+            <select formControlName="gstType">
+              <option value="CGST_SGST">CGST + SGST</option>
+              <option value="IGST">IGST</option>
+              <option value="NONE">No GST</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>GST Rate</label>
+            <select formControlName="gstRate">
+              <option value="0">0%</option>
+              <option value="5">5%</option>
+              <option value="12">12%</option>
+              <option value="18">18%</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-2" formGroupName="extraCharge">
+          <div class="form-group">
+            <label>Extra Charge Name</label>
+            <input type="text" placeholder="e.g. Shipping, Handling" formControlName="label" />
+          </div>
+
+          <div class="form-group">
+            <label>Extra Charge (₹)</label>
+            <input type="number" formControlName="amount" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="products-header">
+          <h4>Products / Services</h4>
+          <button type="button" class="btn-outline" (click)="addItem()">+ Add Product</button>
+        </div>
+
+        <div class="table-head">
+          <span>Product</span>
+          <span>Qty</span>
+          <span>Rate</span>
+          <span>Discount %</span>
+          <span>Total</span>
+          <span></span>
+        </div>
+
+        <div formArrayName="items">
+          @for(item of items.controls;track $index){
+          <div class="item-row" [formGroupName]="$index">
+            <div>
+              <input class="w-100" placeholder="Product name" formControlName="name">
+              <div>
+                <app-form-error [control]="item.get('name')">
+                </app-form-error>
+              </div>
+            </div>
+            <div>
+              <input type="number" formControlName="qty">
+              <app-form-error [control]="item.get('qty')">
+              </app-form-error>
+            </div>
+            <div>
+              <input type="number" formControlName="price">
+              <div>
+                <app-form-error [control]="item.get('price')">
+                </app-form-error>
+              </div>
+            </div>
+            <div>
+              <input type="number" formControlName="discount">
+            </div>
+
+            <div class="amount">₹{{ itemTotal(item) }}</div>
+
+            <button type="button" class="delete" (click)="removeItem($index)">🗑</button>
+          </div>
+          }
+        </div>
+      </div>
+
+      <div class="summary">
+        @if(calculateInvoice().totalDiscount > 0){
+        <div>
+          <span>Total Discount:</span> <span>{{ calculateInvoice().totalDiscount | currency }}</span>
+        </div>
+        <div>
+          <span>Sub Total:</span><span>{{ calculateInvoice().subTotal | currency }}</span>
+        </div>
+        }
+
+        @if (invoiceForm.get('extraCharge.amount')?.value > 0) {
+        <div>
+          <span>{{ invoiceForm.get('extraCharge.label')?.value || 'Extra Charge' }}:</span>
+          <span>{{ invoiceForm.get('extraCharge.amount')?.value | currency }}</span>
+        </div>
+        }
+
+        <div>
+          <span>Taxable Amount:</span><span>{{ calculateInvoice().taxableAmount | currency }}</span>
+        </div>
+        <div class="gst">
+          <span>GST: </span><span>{{ calculateInvoice().gstAmount | currency }}</span>
+        </div>
+
+        <div class="total">
+          <span>Grand Total:</span><span>{{ calculateInvoice().grandTotal | currency }}</span>
+        </div>
+        <div>
+          <span>Advance Paid:</span><span>{{ calculateInvoice().advancePaid | currency }}</span>
+        </div>
+        <div class="due">
+          <span>Balance Due:</span><span>{{ calculateInvoice().balanceDue | currency }}</span>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="mat-modal-footer actions">
+    <button type="button" class="btn-light" (click)="resetInvoice()">Reset</button>
+    <button type="submit" class="btn-primary" (click)="saveInvoice()">Save Invoice</button>
+  </div>
+</div>

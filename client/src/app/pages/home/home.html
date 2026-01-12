@@ -1,0 +1,132 @@
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg bg-white shadow-sm py-3">
+  <div class="container">
+    <span class="navbar-brand fw-bold title">
+      <div class="logo-circle">
+        <img src="assets/image/violet-logo.png" alt="logo" class="img-fluid logo-width-height">
+      </div>
+    </span>
+    <div class="brand d-flex align-items-center">
+      <h4 class="ms-2 mb-0">InvoiceFlow</h4>
+    </div>
+
+    <div class="ms-auto d-flex gap-3">
+      <a class="btn btn-link text-dark text-decoration-none" (click)="openLoginPage()">Sign in</a>
+      <button class="btn btn-primary rounded-pill px-4 d-none d-sm-block" (click)="openRegisterPage()">
+        Get Started
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="py-sm-5 bg-light">
+  <div class="container text-center">
+    <h1 class="display-5 fw-bold mt-4">
+      Invoice smarter,
+      <span class="text-primary-brand">get paid faster</span>
+    </h1>
+
+    <p class="text-muted mt-3 mx-auto hero-text">
+      The all-in-one invoicing platform that helps freelancers and businesses
+      create professional invoices, track payments, and manage clients effortlessly.
+    </p>
+
+    <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+      <button class="btn-primary btn-lg rounded-pill px-4" (click)="openRegisterPage()">
+        Start for free
+      </button>
+      <button class="btn btn-outline-secondary btn-lg rounded-pill px-4 fs-6" (click)="openRegisterPage()">
+        View demo
+      </button>
+    </div>
+
+    <!-- STATS -->
+    <div class="row mt-5 text-center">
+      <div class="col-md-4 mb-3">
+        <h4 class="fw-bold text-primary-brand">10K+</h4>
+        <p class="text-muted">Active Users</p>
+      </div>
+      <div class="col-md-4 mb-3">
+        <h4 class="fw-bold text-primary-brand">$50M+</h4>
+        <p class="text-muted">Invoices Processed</p>
+      </div>
+      <div class="col-md-4 mb-3">
+        <h4 class="fw-bold text-primary-brand">99.9%</h4>
+        <p class="text-muted">Uptime</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="py-sm-5 py-sm-1">
+  <div class="container">
+    <h2 class="fw-bold text-center">
+      Everything you need to manage invoices
+    </h2>
+    <p class="text-center text-muted mb-5">
+      Powerful features designed to streamline your invoicing workflow
+    </p>
+
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 shadow-sm border-0 text-center p-4">
+          <div class="icon bg-primary-subtle mx-auto mb-3">📄</div>
+          <h5 class="fw-bold">Professional Invoices</h5>
+          <p class="text-muted small">
+            Create stunning invoices with customizable templates.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 shadow-sm border-0 text-center p-4">
+          <div class="icon bg-primary-subtle mx-auto mb-3">📊</div>
+          <h5 class="fw-bold">Real-time Analytics</h5>
+          <p class="text-muted small">
+            Track payments, revenue, and client activity.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 shadow-sm border-0 text-center p-4">
+          <div class="icon bg-primary-subtle mx-auto mb-3">⏰</div>
+          <h5 class="fw-bold">Automated Reminders</h5>
+          <p class="text-muted small">
+            Never chase payments again.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 shadow-sm border-0 text-center p-4">
+          <div class="icon bg-primary-subtle  mx-auto mb-3">👥</div>
+          <h5 class="fw-bold">Client Management</h5>
+          <p class="text-muted small">
+            Organize clients and invoice history.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-5 bg-dark text-white">
+  <div class="container text-center">
+    <h2 class="fw-bold">Ready to simplify your invoicing?</h2>
+    <p class="text-light mb-4">
+      Join thousands of businesses that trust InvoiceFlow
+    </p>
+    <button class="btn btn-primary btn-lg rounded-pill px-4 fs-6" (click)="openRegisterPage()">
+      Get started for free
+    </button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-3 bg-light text-center text-muted">
+  © 2024 InvoiceFlow. All rights reserved.
+</footer>

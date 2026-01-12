@@ -1,0 +1,256 @@
+@use '../../../../src/variables' as v;
+
+/* HEADER */
+.topbar {
+  height: 64px;
+  background: linear-gradient(90deg, #1c1f2e, #242845);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      background: #22f0c7;
+      border-radius: 50%;
+    }
+
+  }
+
+
+
+  .logout {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+  }
+}
+
+.invoice-page {
+  padding: 24px;
+  background: #f7f8fc;
+  min-height: 100vh;
+}
+
+/* Header */
+.icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #ede9fe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7c3aed;
+  font-size: 20px;
+}
+
+.page-title {
+  font-weight: 600;
+}
+
+/* Button */
+.new-invoice-btn {
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-weight: 500;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: auto;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(124, 58, 237, 0.3);
+  }
+}
+
+/* Filter Card */
+.main-page {
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+
+}
+
+// .filter-card {
+// }
+
+/* Input */
+.input-wrapper {
+  position: relative;
+
+  i {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    transform: translateY(-50%);
+    color: #9ca3af;
+  }
+
+  input {
+    padding-left: 40px;
+    border-radius: 10px;
+    height: 44px;
+
+    &:focus {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 0.15rem rgba(124, 58, 237, 0.25);
+    }
+  }
+}
+
+/* Select */
+.form-select {
+  height: 44px;
+  border-radius: 10px;
+
+  &:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 0.15rem rgba(124, 58, 237, 0.25);
+  }
+}
+
+table {
+  margin-bottom: 0;
+
+  thead th {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+    white-space: nowrap;
+
+    i {
+      font-size: 12px;
+      margin-left: 6px;
+      color: #9ca3af;
+    }
+  }
+
+  tbody tr {
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: #f9fafb;
+    }
+  }
+
+  td {
+    font-size: 14px;
+  }
+}
+
+/* Status Badge */
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+
+  &.pending {
+    background: #fff7ed;
+    color: #d97706;
+    border: 1px solid #fed7aa;
+  }
+}
+
+/* Actions */
+.action-icons i {
+  margin-left: 14px;
+  cursor: pointer;
+  color: #6b7280;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #7c3aed;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 20px;
+  }
+
+  .new-invoice-btn {
+    padding: 8px 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  .page-title {
+    font-size: 20px;
+  }
+
+  .new-invoice-btn {
+    padding: 8px 14px;
+    width: 100%;
+  }
+}
+
+.pagination {
+  gap: 6px;
+
+  .page-link {
+    border-radius: 8px;
+    min-width: 38px;
+    height: 38px;
+    font-size: 14px;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #f5f3ff;
+      color: #7c3aed;
+      border-color: #c4b5fd;
+    }
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  .page-item.active .page-link {
+    background: #7c3aed;
+    color: #fff;
+    border-color: #7c3aed;
+    font-weight: 500;
+  }
+
+  .page-item.disabled .page-link {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+
+.logo-container {
+  /* Using your brand gradient */
+  background: linear-gradient(90deg, #1c1f2e, #242845);
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+}
+
+.white-logo {
+  filter: drop-shadow(0px 4px 10px rgba(124, 58, 237, 0.3));
+  /* Subtle purple glow using #7c3aed */
+}

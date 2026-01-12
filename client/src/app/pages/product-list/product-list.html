@@ -1,0 +1,80 @@
+<div class="mat-modal">
+    <div class="mat-modal-header">
+        <h2 class="modal-title">Create New Invoice</h2>
+        <button type="button" class="close-btn border-0" mat-dialog-close>✕</button>
+    </div>
+    <div class="invoice-wrapper">
+        <div class="invoice-products">
+            <div class="invoice-header">
+                <div>PRODUCT</div>
+                <div>PRICE</div>
+                <div>QTY</div>
+                <div>DISCOUNT</div>
+                <div>FINAL</div>
+            </div>
+
+            @for (product of data['items']; track $index) {
+            <div class="invoice-row">
+                <div class="product-name" data-label="Product">{{ product.product }}</div>
+                <div data-label="Price">₹{{ product.price }}</div>
+                <div data-label="Qty">{{ product.qty }}</div>
+                <div class="discount" data-label="Discount">
+                    {{ product.discount ? product.discount + '%' : '-' }}
+                </div>
+                <div class="final-price" data-label="Total">
+                    ₹{{ product.total | money }}
+                </div>
+            </div>
+            }
+        </div>
+
+        <div class="invoice-totals">
+
+            @if(totalPrice.totalDiscount > 0){
+            <div class="total-row muted">
+                <span>Discount ({{ totalPrice.commonDiscount }}%)</span>
+                <span>-₹{{ totalPrice.totalDiscount | money}}</span>
+            </div>
+
+            <div class="total-row">
+                <span>Subtotal</span>
+                <span>₹{{ totalPrice.subTotal | money }}</span>
+            </div>
+            }
+
+            @if (totalPrice.extraCharge > 0) {
+            <div class="total-row">
+                <span>{{ totalPrice.extraChargeLabel }}:</span>
+                <span>₹{{ totalPrice.extraCharge | money }}</span>
+            </div>
+            }
+
+            <div class="total-row bold">
+                <span>Taxable Amount</span>
+                <span>₹{{ totalPrice.taxableAmount | money }}</span>
+            </div>
+
+            <div class="total-row muted">
+                <span>GST ({{totalPrice.gstRate}}%)</span>
+                <span>₹{{ totalPrice.gstAmount | money }}</span>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="total-row grand-total">
+                <span>Grand Total</span>
+                <span>₹{{ totalPrice.grandTotal | money}}</span>
+            </div>
+
+            <div class="total-row">
+                <span>Advance Paid</span>
+                <span>-₹{{ (totalPrice.advancePaid || 0)| money }}</span>
+            </div>
+
+            <div class="total-row balance">
+                <span>Balance Due</span>
+                <span>₹{{ totalPrice.balanceDue | money}}</span>
+            </div>
+        </div>
+    </div>
+</div>

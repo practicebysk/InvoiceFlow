@@ -1,0 +1,222 @@
+@use './variables' as *;
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme((color: (primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    ));
+}
+
+body {
+  // Default the application to a light color theme. This can be changed to
+  // `dark` to enable the dark color theme, or to `light dark` to defer to the
+  // user's system settings.
+  color-scheme: light;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+}
+
+/* ================================
+   FONT: Inter Variable
+================================ */
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/assets/font/Inter/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/assets/font/Inter/Inter-Italic-VariableFont.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+}
+
+/* ================================
+   Bootstrap Font Override
+   (Must be BEFORE bootstrap import)
+================================ */
+
+$font-family-sans-serif: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+
+/* ================================
+   Import Bootstrap
+================================ */
+
+/* ================================
+   Global Styles
+================================ */
+
+body {
+  font-family: 'Inter', sans-serif !important;
+  background-color: #f8f9fa;
+  color: #212529;
+
+
+  /* Better text rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Paragraphs */
+p {
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* Buttons */
+.btn {
+  font-weight: 500;
+}
+
+/* Small text */
+.small,
+small {
+  font-weight: 400;
+}
+
+.card {
+  background-color: $bg-card;
+  border: 1px solid $border-light;
+  box-shadow: $shadow-sm;
+}
+
+.title {
+  color: $primary !important;
+}
+
+.muted-text {
+  color: $text-muted;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.snackbar-success .mdc-snackbar__surface {
+  background-color: #2e7d32 !important;
+  color: #fff !important;
+}
+
+.snackbar-error .mdc-snackbar__surface {
+  background-color: #d32f2f !important;
+  color: #fff !important;
+}
+
+
+.btn-primary {
+  padding: 8px 18px !important;
+  border-radius: 8px !important;
+  background: #7c3aed !important;
+  color: #ffffff !important;
+  border: none !important;
+  font-size: 1rem !important;
+}
+
+.text-primary-brand {
+  color: #7c3aed !important;
+}
+
+.logo-width-height {
+  width: 50px;
+  height: 50px;
+}
+
+
+.mat-modal-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
+  padding: 0px 15px;
+  min-height: 55px;
+  border-bottom: 1px solid #e5e7eb;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mat-modal-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.mat-modal-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background: #fff;
+  padding: 10px 15px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  min-height: 55px;
+}
+
+
+.mat-modal {
+  display: flex;
+  flex-direction: column;
+  height: 90vh; 
+  max-height: 90vh;
+}
+
+.form-control {
+  padding: 12px 14px;
+  border-radius: 12px !important;
+  font-size: 0.9rem !important;
+}
+
+.modal-title {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.mat-mdc-dialog-surface {
+  border-radius: 10px !important;
+}
+
+i {
+  cursor: pointer;
+}

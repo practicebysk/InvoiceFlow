@@ -1,0 +1,88 @@
+<div class="container-fluid vh-100">
+  <div class="row h-100">
+
+    <!-- LEFT SIDE -->
+    <div class="col-lg-6 d-none d-lg-flex left-panel">
+      <div class="left-content">
+
+        <div class="brand d-flex align-items-center mb-5">
+          <div class="logo-circle">
+            <img src="assets/image/white-logo.png" alt="logo" class="img-fluid logo-width-height">
+          </div>
+          <h4 class="ms-2 mb-0 text-white">InvoiceFlow</h4>
+        </div>
+
+        <h1 class="fw-bold text-white">
+          Simplify your <br />
+          <span class="text-accent">invoicing workflow</span>
+        </h1>
+
+        <p class="text-light mt-3 mb-4">
+          Create, send, and track invoices effortlessly.
+          Get paid faster with our powerful invoicing platform.
+        </p>
+
+        <ul class="feature-list">
+          <li>✔ Create professional invoices in seconds</li>
+          <li>✔ Track payments automatically</li>
+          <li>✔ Secure & encrypted data</li>
+          <li>✔ Fast & reliable platform</li>
+        </ul>
+
+        <!-- Floating cards -->
+        <div class="floating-card top">
+          Invoice #1234
+        </div>
+
+        <div class="floating-card bottom">
+          $2,450<br />
+          <small>Payment received</small>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="col-lg-6 d-flex align-items-center justify-content-center">
+      <div class="form-wrapper">
+
+        <h2 class="fw-bold text-center">Create account</h2>
+
+        <form>
+          <div class="mb-3">
+            <label class="form-label">Email address</label>
+            <input [(ngModel)]="form.email" class="form-control" name="email" placeholder="you@example.com" required />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Shop Name</label>
+            <input [(ngModel)]="form.shopName" class="form-control" name="shopName" placeholder="Shop Name" required />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Shop Address</label>
+            <input [(ngModel)]="form.shopAddress" class="form-control" name="shopAddress" placeholder="Shop Address"
+              required />
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">Password</label>
+            <input type="password" [(ngModel)]="form.password" class="form-control" name="password"
+              placeholder="Create a password" required />
+          </div>
+
+          <button class="btn btn-primary w-100 btn-lg rounded-pill" (click)="register()">
+            Create account →
+          </button>
+        </form>
+
+        <p class="text-center mt-4 cursor">
+          Already have an account?
+          <a class="fw-semibold" (click)="navigate.openLoginPage()">Sign in</a>
+        </p>
+
+      </div>
+    </div>
+
+  </div>
+</div>

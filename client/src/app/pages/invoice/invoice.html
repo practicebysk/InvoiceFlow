@@ -1,0 +1,125 @@
+<header class="topbar">
+  <div class="brand">
+    <img src="assets/image/white-logo.png" alt="logo" class="img-fluid logo-width-height">
+    <span>InvoiceFlow</span>
+  </div>
+
+  <button class="logout">⎋</button>
+</header>
+
+<div class="page-wrapper">
+  <div class="invoice-page container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+      <div class="d-flex align-items-center gap-3">
+        <div class="icon-box">
+          <i class="bi bi-receipt"></i>
+        </div>
+        <div>
+          <h2 class="page-title mb-0">Invoices</h2>
+          <p class="text-muted mb-0">Manage and track your invoices</p>
+        </div>
+      </div>
+
+      <button class="btn-primary new-invoice-btn mt-3 mt-sm-0" (click)="openCreateInvoice()">
+        <i class="bi bi-plus-lg me-2"></i> New Invoice
+      </button>
+    </div>
+
+    <div class="main-page">
+      <div class="filter-card mb-3">
+        <div class="row g-3 align-items-center">
+          <div class="col-md-6 col-lg-4">
+            <div class="input-wrapper">
+              <i class="bi bi-search"></i>
+              <input type="text" class="form-control" placeholder="Search customer..."
+                (input)="onSearchCustomer($event)" />
+            </div>
+          </div>
+
+          <div class=" col-md-4 col-lg-3" (change)="onStatusChange($event)">
+            <select class="form-select">
+              <option>Pending</option>
+              <option>Paid</option>
+              <option>Overdue</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>Invoice No
+                  <i class="bi" [ngClass]="sortIcons()['invoiceNo']" (click)="changeSort('invoiceNo')"></i>
+                </th>
+                <th>Customer
+                  <i class="bi" [ngClass]="sortIcons()['customer.name']" (click)="changeSort('customer.name')"></i>
+                </th>
+                <th>Amount
+                  <i class="bi" [ngClass]="sortIcons()['total']" (click)="changeSort('total')"></i>
+                </th>
+                <th>Status
+                  <i class="bi" [ngClass]="sortIcons()['customer.name']" (click)="changeSort('customer.name')"></i>
+                </th>
+                <th>Due Date
+                  <i class="bi" [ngClass]="sortIcons()['customer.due_date']"
+                    (click)="changeSort('customer.due_date')"></i>
+                </th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (invoice of invoices(); track $index) {
+              <tr>
+                <td>{{invoice.invoiceNo}}</td>
+                <td class="text-muted">{{ invoice.customer.name }}</td>
+                <td class="fw-semibold">₹{{ invoice.totals.grandTotal }}</td>
+                <td>
+                  <span class="status-badge pending">{{ invoice.customer.status }}</span>
+                </td>
+                <td class="text-muted">{{ invoice.customer.due_date | date:'d MMM yy, h:mm a' }}</td>
+                <td class="text-end action-icons">
+                  <i class="bi bi-eye" (click)="viewProductList(invoice)"></i>
+                  <i class="bi bi-download" (click)="downloadPdf(invoice._id)"></i>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        @if (totalPages() > 1) {
+        <div class="d-flex justify-content-end mt-4">
+          <nav>
+            <ul class="pagination mb-0">
+
+              <li class="page-item" [class.disabled]="page() === 1">
+                <button class="page-link" (click)="changePage(page() - 1)" [disabled]="page() === 1">
+                  Prev
+                </button>
+              </li>
+
+              @for (p of pages(); track p) {
+              <li class="page-item" [class.active]="p === page()">
+                <button class="page-link" (click)="changePage(p)">
+                  {{ p }}
+                </button>
+              </li>
+              }
+
+              <li class="page-item" [class.disabled]="page() === totalPages()">
+                <button class="page-link" (click)="changePage(page() + 1)" [disabled]="page() === totalPages()">
+                  Next
+                </button>
+              </li>
+
+            </ul>
+          </nav>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
