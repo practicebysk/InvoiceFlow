@@ -7,8 +7,8 @@ import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
 
 import { env } from "./env.js";
-import authRoutes from "./routes.auth.js";
-import invoiceRoutes from "./routes/invoice.js";
+import userRoutes from "./routes/user.routes.js";
+import invoiceRoutes from "./routes/invoice.routes.js";
 
 const app = express();
 
@@ -22,7 +22,7 @@ app.use(morgan("dev"));
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
 
 // routes
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", userRoutes);
 app.use("/api/invoices", invoiceRoutes);
 
 // start server
