@@ -2,7 +2,7 @@ import { Component, computed, OnDestroy, OnInit, signal } from '@angular/core';
 import { Api } from '../../services/api';
 import { FormsModule, } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { debounceTime, Subject, switchMap, takeUntil } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductList } from '../product-list/product-list';
 import { CreateInvoice } from '../create-invoice/create-invoice';
@@ -37,21 +37,16 @@ export class Invoice implements OnInit, OnDestroy {
   }
 
   loadInvoices() {
-    this.search$.pipe(debounceTime(300)).pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.search$.pipe(debounceTime(300), takeUntil(this.destroy$), switchMap(() => {
       const param = {
-        page: this.page(),
-        size: this.size,
-        name: this.name(),
-        status: this.status(),
-        sortBy: this.sortBy(),
-        sortOrder: this.sortOrder()
+        page: this.page(), size: this.size, name: this.name(), status: this.status(), sortBy: this.sortBy(), sortOrder: this.sortOrder()
       }
-      this.api.getInvoices(param).subscribe({
-        next: (res: any) => {
-          this.invoices.set(res.data.rows);
-          this.totalPages.set(res.data.pagination.total_pages);
-        }
-      })
+      return this.api.getInvoices(param);
+    })).subscribe({
+      next: (res: any) => {
+        this.invoices.set(res.data.rows);
+        this.totalPages.set(res.data.pagination.total_pages);
+      }
     });
   }
 

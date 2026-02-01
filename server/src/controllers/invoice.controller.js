@@ -49,7 +49,7 @@ export const createInvoice = async (req, res) => {
 };
 
 // Get all invoices
-export const getInvoices = ("/", async (req, res) => {
+export const getInvoices = async (req, res) => {
     const { page, size, name, status, sortBy, sortOrder } = getPaginationParams(req.query);
     const filter = {};
     if (name?.trim()) {
@@ -74,14 +74,52 @@ export const getInvoices = ("/", async (req, res) => {
             total_rows: totalRows
         },
     });
-});
+};
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export const pdfDownload = ("/:id/pdf", async (req, res) => {
+export function calculateItems(invoice) {
+    let totalItemDiscount = 0;
+    let totalBeforeDiscount = 0;
+    const item = invoice.items.map(item => {
+        const plain = item;
+        const price = Number(plain.price) || 0;
+        const qty = Number(plain.qty) || 0;
+        const discount = Number(plain.discount) || 0;
+        const itemTotal = price * qty;
+        const itemDiscountAmount = (itemTotal * discount) / 100;
+        let total = itemTotal - itemDiscountAmount;
+        totalBeforeDiscount += itemTotal;
+        totalItemDiscount += itemDiscountAmount;
+        return {
+            ...plain,
+            total: Number(total.toFixed(2))
+        }
+    });
+    return { item, totalItemDiscount, totalBeforeDiscount };
+}
+
+export function calculateTotalItems(invoice, calculatedItems) {
+    const commonDiscount = invoice.commonDiscount || 0;
+    const subTotalBeforeCommonDiscount = calculatedItems.totalBeforeDiscount - calculatedItems.totalItemDiscount;
+    const commonDiscountAmount = subTotalBeforeCommonDiscount * (commonDiscount / 100);
+    const subTotal = subTotalBeforeCommonDiscount - commonDiscountAmount;
+    const totalDiscount = commonDiscountAmount;
+    const extraChargeAmount = invoice.extraCharge.amount || 0;
+    const taxableAmount = subTotal + extraChargeAmount;
+    const gstRate = invoice.gstRate || 0;
+    const gstAmount = (taxableAmount * gstRate) / 100;
+    const grandTotal = taxableAmount + gstAmount;
+    const advancePaid = invoice.advancePaid || 0;
+    const balanceDue = grandTotal - advancePaid;
+
+    return {totalDiscount, subTotal, extraChargeAmount, taxableAmount, gstAmount, grandTotal, advancePaid, balanceDue}
+}
+
+export const pdfDownload = async (req, res) => {
     try {
-        const invoice = await Invoice.findById(req.params.id);
+        let invoice = await Invoice.findById(req.params.id).lean({ virtuals: true }).exec();
         if (!invoice) {
             return res.status(404).json({ message: "Invoice not found" });
         }
@@ -90,6 +128,17 @@ export const pdfDownload = ("/:id/pdf", async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
         if (!invoice) return res.status(404).send("Invoice not found");
+
+        const calculatedItems = calculateItems(invoice);
+        const calculatedTotalItems = calculateTotalItems(invoice, calculatedItems);
+
+        invoice = {
+            ...invoice,
+            ...calculatedTotalItems,
+            items: calculatedItems.item
+        };
+
+        console.log(invoice);
 
         const html = invoiceTemplate({ user, invoice });
 
@@ -117,7 +166,7 @@ export const pdfDownload = ("/:id/pdf", async (req, res) => {
         console.error(err);
         res.status(500).json({ error: "Failed to generate PDF" });
     }
-});
+};
 
 // export const ("/:id/pdf-link", async (req, res) => {
 //     try {

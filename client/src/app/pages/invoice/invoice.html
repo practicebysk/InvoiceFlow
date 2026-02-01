@@ -101,7 +101,7 @@
                 </button>
               </li>
 
-              @for (p of pages(); track p) {
+              @for (p of pages(); track $index) {
               <li class="page-item" [class.active]="p === page()">
                 <button class="page-link" (click)="changePage(p)">
                   {{ p }}

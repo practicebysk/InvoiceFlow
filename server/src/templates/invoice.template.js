@@ -1,86 +1,116 @@
+import { formatInvoiceDate } from "../utils/dateFormatter.utils.js";
 export default function invoiceTemplate({ user, invoice }) {
-    return `
+  return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Invoice</title>
+<meta charset="UTF-8">
+<title>Invoice</title>
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="header">
-    <div class="brand">
-      <div class="logo">K</div>
-      <div>
-        <h1>${user.shopName}</h1>
-        <span class="brand-line"></span>
-      </div>
+<div class="invoice-wrapper">
+  <!-- HEADER -->
+  <div class="invoice-header">
+    <div class="logo">
+      <span>K</span>OICE
     </div>
-  </header>
+    <h2>Invoice</h2>
+  </div>
 
-  <!-- Info -->
-  <section class="info">
+  <hr>
+
+  <!-- META -->
+  <div class="invoice-meta">
     <div>
-      <p class="label">ADDRESS</p>
-      <p class="value">${user.shopAddress}</p>
+      <strong>Date:</strong>${formatInvoiceDate(invoice.customer.due_date)}
     </div>
-    <div>
-      <p class="label">CUSTOMER</p>
-      <p class="value">${invoice.customer.name}</p>
-    </div>
-    <div>
-      <p class="label">DATE</p>
-      <p class="value">${new Date(invoice.customer.due_date).toDateString()}</p>
-    </div>
-  </section>
-
-  <!-- Table -->
-  <section class="table-card">
-    <table>
-      <thead>
-        <tr>
-          <th>PRODUCT</th>
-          <th>PRICE</th>
-          <th>QTY</th>
-          <th>DISCOUNT</th>
-          <th class="right">TOTAL</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${invoice.items.map(it => `
-          <tr>
-            <td>${it.product}</td>
-            <td>₹${it.price}</td>
-            <td>${it.qty}</td>
-            <td>₹${it.discount || 0}</td>
-            <td class="right bold">₹${it.price * it.qty - (it.discount || 0)}</td>
-          </tr>
-        `).join("")}
-      </tbody>
-    </table>
-  </section>
-
-  <!-- Totals -->
-  <section class="summary">
-  <div class="summary-box">
-    <div class="row dark">
-      <span>Grand Total</span>
-      <strong>₹${invoice.total}</strong>
-    </div>
-
-    <div class="row success">
-      <span>Advance Paid</span>
-      <strong>₹${invoice.paid || 0}</strong>
-    </div>
-
-    <div class="row danger">
-      <span>Pending Amount</span>
-      <strong>₹${invoice.total - (invoice.paid || 0)}</strong>
+    <div class="right">
+      <strong>Invoice No:</strong> ${invoice.invoiceNo}
     </div>
   </div>
-</section>
+  <hr>
+  <!-- ADDRESSES -->
+  <div class="addresses">
+    <div>
+      <div class="title">Invoiced To:</div>
+      ${invoice.customer.name}<br>
+    </div>
+
+    <div class="right">
+      <div class="title">Pay To:</div>
+      ${user.shopName}<br>
+      ${user.shopAddress}<br>
+      ${user.email}
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <table>
+    <thead>
+      <tr>
+        <th>PRODUCT</th>
+        <th>Rate</th>
+        <th>QTY</th>
+        <th>DISCOUNT</th>
+        <th class="right">TOTAL</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      ${invoice.items.map(product =>
+        `
+        <tr>
+          <td>${product.product}</td>
+          <td>₹${product.price?.toFixed(2)}</td>
+          <td>${product.qty}</td>
+          <td>${product.discount ? product.discount + '%' : '-'}</td>
+          <td class="right">₹${product.total}</td>
+        </tr>
+      `).join("")}
+    </tbody>
+
+    <tfoot>
+      <tr>
+        <td colspan="4" class="right">Discount (${invoice.commonDiscount.toFixed(2)}%)</td>
+        <td class="right">-${invoice.totalDiscount.toFixed(2)}</td>
+      </tr>
+      <tr>
+        <td colspan="4" class="right">Subtotal</td>
+        <td class="right">${invoice.subTotal.toFixed(2)}</td>
+      </tr>
+      <tr>
+        <td colspan="4" class="right">${invoice.extraCharge.label}</td>
+        <td class="right">${invoice.extraChargeAmount.toFixed(2)}</td>
+      </tr>
+      <tr>
+        <td colspan="4" class="right">Taxable Amount</td>
+        <td class="right">${invoice.taxableAmount.toFixed(2)}</td>
+      </tr>
+      <tr>
+        <td colspan="4" class="right">GST (${invoice.gstRate.toFixed(2)}%)</td>
+        <td class="right">${invoice.gstAmount.toFixed(2)}</td>
+      </tr>
+      <tr>
+        <td colspan="4" class="right">Grand Total</td>
+        <td class="right">${invoice.grandTotal.toFixed(2)}</td>
+      </tr>
+      <tr>
+        <td colspan="4" class="right">Advance Paid</td>
+        <td class="right">-${invoice.advancePaid.toFixed(2)}</td>
+      </tr>
+      <tr>
+        <td colspan="4" class="right">Balance Due</td>
+        <td class="right">${invoice.balanceDue.toFixed(2)}</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <p class="note">
+    NOTE : This is computer generated receipt and does not require physical signature.
+  </p>
+
+</div>
 
 </body>
 </html>

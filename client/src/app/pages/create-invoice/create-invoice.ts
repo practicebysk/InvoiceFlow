@@ -40,7 +40,7 @@ export class CreateInvoice {
 
   createItem(): FormGroup {
     return this.fb.group({
-      name: ['', Validators.required],
+      product: ['', Validators.required],
       qty: [1, Validators.required],
       price: [0, Validators.required],
       discount: [0, [Validators.min(0)]]
@@ -59,14 +59,14 @@ export class CreateInvoice {
     const qty = item.get('qty')?.value || 0;
     const price = item.get('price')?.value || 0;
     const productDiscount = item.get('discount')?.value || 0;
-    const commonDiscount = this.invoiceForm.get('commonDiscount')?.value || 0;
+    // const commonDiscount = this.invoiceForm.get('commonDiscount')?.value || 0;
     let total = qty * price;
     if (productDiscount > 0) { total -= (total * productDiscount) / 100; }
-    if (commonDiscount > 0) { total -= (total * commonDiscount) / 100; }
+    // if (commonDiscount > 0) { total -= (total * commonDiscount) / 100; }
     return total;
   }
 
-  calculateInvoice() {
+  get calculateInvoice() {
     const items = this.items.controls;
     let totalItemDiscount = 0;
     let totalBeforeDiscount = 0;
@@ -115,7 +115,7 @@ export class CreateInvoice {
     {
       customer: { name: formValue.customerName, due_date: formValue.due_date, status: formValue.status },
       items: formValue.items.map((item: any) => ({
-        product: item.name,
+        product: item.product,
         qty: this.common.round2(item.qty),
         price: this.common.round2(item.price),
         discount: this.common.round2(item.discount) || 0,

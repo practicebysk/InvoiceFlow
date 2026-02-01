@@ -27,7 +27,6 @@ export class ProductList implements OnInit {
       const discountAmount = (itemTotal * item.discount) / 100;
       let total = itemTotal;
       if (item.discount > 0) { total = (itemTotal - discountAmount) }
-      if (invoice.commonDiscount > 0) { total -= (total * invoice.commonDiscount) / 100; }
       totalBeforeDiscount += itemTotal;
       totalItemDiscount += discountAmount;
       return {
@@ -39,7 +38,7 @@ export class ProductList implements OnInit {
     const subTotalBeforeCommonDiscount = totalBeforeDiscount - totalItemDiscount;
     const commonDiscountAmount = subTotalBeforeCommonDiscount * (commonDiscount / 100);
     const subTotal = subTotalBeforeCommonDiscount - commonDiscountAmount;
-    const totalDiscount = totalItemDiscount + commonDiscountAmount;
+    const totalDiscount = commonDiscountAmount;
     const extraCharge = (invoice.extraCharge?.amount || 0);
     const extraChargeLabel = (invoice.extraCharge?.label || 0);
     const taxableAmount = subTotal + (extraCharge || 0);
