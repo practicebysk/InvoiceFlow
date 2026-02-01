@@ -6,6 +6,7 @@ import { debounceTime, Subject, switchMap, takeUntil } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductList } from '../product-list/product-list';
 import { CreateInvoice } from '../create-invoice/create-invoice';
+import { Common } from '../../services/common';
 
 @Component({
   selector: 'app-invoice',
@@ -29,7 +30,7 @@ export class Invoice implements OnInit, OnDestroy {
 
   readonly columns = ['invoiceNo', 'customer.name', 'total', 'customer.name', 'customer.due_date'];
 
-  constructor(private api: Api, private dialog: MatDialog) { }
+  constructor(public common: Common, private api: Api, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.loadInvoices();

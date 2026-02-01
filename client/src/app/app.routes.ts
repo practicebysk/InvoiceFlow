@@ -1,13 +1,9 @@
 import { Routes } from '@angular/router';
-import { Register } from './register/register';
-import { Login } from './pages/login/login';
-import { Invoice } from './pages/invoice/invoice';
 import { authGuard } from './guards/auth-guard';
-import { Home } from './pages/home/home';
 
 export const routes: Routes = [
-    { path: '', component: Home },
-    { path: 'register', component: Register },
-    { path: 'login', component: Login },
-    { path: 'invoice', component: Invoice, canActivate: [authGuard] }
+    { path: '', loadComponent: () => import('../app/pages/home/home').then(m => m.Home) },
+    { path: 'register', loadComponent: () => import('../app/pages/register/register').then(m => m.Register) },
+    { path: 'login', loadComponent: () => import('../app/pages/login/login').then(m => m.Login) },
+    { path: 'invoice', loadComponent: () => import('../app/pages/invoice/invoice').then(m => m.Invoice), canActivate: [authGuard] }
 ];

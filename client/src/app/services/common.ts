@@ -1,15 +1,17 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class Common {
-    private isBrowser: boolean;
+    public isBrowser: boolean;
 
-    constructor(private matSnackBar: MatSnackBar) {
-        this.isBrowser = typeof window !== 'undefined';
+    constructor(@Inject(PLATFORM_ID) platformId: Object, private matSnackBar: MatSnackBar, private router: Router) {
+        this.isBrowser = isPlatformBrowser(platformId);
     }
 
     setLocalStroge(key: string, value: any): void {
@@ -25,6 +27,14 @@ export class Common {
     getLocalStroge(key: string): string | null {
         if (!this.isBrowser) return null;
         return localStorage.getItem(key);
+    }
+
+    removeLocalStroge(key: string) {
+        if (this.isBrowser) { localStorage.removeItem(key); }
+    }
+
+    getAuthToken(): string | null {
+        return this.getLocalStroge('auth');
     }
 
     private defaultConfig: MatSnackBarConfig = {
@@ -62,5 +72,10 @@ export class Common {
 
     round2(val: number): number {
         return Math.round((val + Number.EPSILON) * 100) / 100;
+    }
+
+    logOut() {
+        this.removeLocalStroge('auth');
+        this.router.navigate(['/login']);
     }
 }

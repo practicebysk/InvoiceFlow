@@ -5,7 +5,7 @@ import { validate } from "../utils/validate.utils.js";
 import { invoiceSchema } from "../validators/invoice.schema.js";
 
 const router = express.Router();
-// router.use(authMiddleware);
+router.use(authMiddleware);
 
 router.post("/", validate(invoiceSchema), createInvoice);
 router.get("/", getInvoices);

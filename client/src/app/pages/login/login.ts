@@ -21,7 +21,7 @@ export class Login implements OnInit {
   constructor(private api: Api, private router: Router, public navigate: Navigate) { }
 
   ngOnInit(): void {
-    if (this.commonService.getLocalStroge('auth')) {
+    if (this.commonService.getAuthToken()) {
       this.navigate.navigate('/invoice');
     }
   }

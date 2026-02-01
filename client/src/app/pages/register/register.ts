@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Api } from '../services/api';
 import { FormsModule } from '@angular/forms';
-import { Navigate } from '../services/navigate';
-import { Common } from '../services/common';
+import { Api } from '../../services/api';
+import { Common } from '../../services/common';
+import { Navigate } from '../../services/navigate';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +17,7 @@ export class Register implements OnInit {
   constructor(private api: Api, public navigate: Navigate) { }
 
   ngOnInit(): void {
-    if (this.commonService.getLocalStroge('auth')) {
+    if (this.commonService.getAuthToken()) {
       this.navigate.navigate('/invoice');
     }
   }

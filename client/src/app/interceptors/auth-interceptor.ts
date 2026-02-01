@@ -9,10 +9,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const platformId = inject(PLATFORM_ID);
   const common = inject(Common);
-  let token = '';
-  if (isPlatformBrowser(platformId)) {
-    token = localStorage.getItem('auth') || '';
-  }
+  let token = common.getAuthToken() || '';
   const authReq = req.clone({
     setHeaders: { 'Authorization': `Bearer ${token}` }
   });
@@ -23,10 +20,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       }
 
       if (err instanceof HttpErrorResponse && err.status === 401) {
-        if (isPlatformBrowser(platformId)) {
-          localStorage.removeItem('auth');
-        }
-        router.navigate(['/login']);
+        common.logOut();
         return EMPTY;
       }
 
