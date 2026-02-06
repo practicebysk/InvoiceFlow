@@ -2,6 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -9,6 +10,7 @@ import { Router } from '@angular/router';
 
 export class Common {
     public isBrowser: boolean;
+    public isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     constructor(@Inject(PLATFORM_ID) platformId: Object, private matSnackBar: MatSnackBar, private router: Router) {
         this.isBrowser = isPlatformBrowser(platformId);
@@ -35,6 +37,10 @@ export class Common {
 
     getAuthToken(): string | null {
         return this.getLocalStroge('auth');
+    }
+
+    isAuthenticatedFun(){
+      return this.getAuthToken();
     }
 
     private defaultConfig: MatSnackBarConfig = {

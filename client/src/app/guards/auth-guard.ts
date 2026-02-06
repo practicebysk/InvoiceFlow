@@ -1,14 +1,19 @@
-import { CanActivateFn, Router } from '@angular/router';
+import { CanActivateFn } from '@angular/router';
 import { inject } from '@angular/core';
 import { Common } from '../services/common';
+import { Navigate } from '../services/navigate';
 
-export const authGuard: CanActivateFn = (route, state) => {
-  const router = inject(Router);
+export const authGuard: CanActivateFn = () => {
   const common = inject(Common);
-  if (common.getAuthToken()) {
-    return true;
-  } else {
-    router.navigate(['/login']);
-    return false;
+  const navigate = inject(Navigate);
+  if (common.isBrowser) {
+    const token = common.getAuthToken()
+    if (token) {
+      return true;
+    } else {
+      navigate.openLoginPage();
+      return false;
+    }
   }
+  return true;
 };
